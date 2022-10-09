@@ -1,0 +1,21 @@
+.floating {
+  background: #1b1b1b;
+  border-radius: 4px;
+  color: whitesmoke;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 21px;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.arrow {
+  background: #222;
+  bottom: 0;
+  height: 8px;
+  position: absolute;
+  right: 0;
+  transform: rotate(45deg);
+  width: 8px;
+  z-index: 999;
+}
