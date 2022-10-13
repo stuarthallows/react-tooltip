@@ -11,17 +11,21 @@ import {
   useFocus,
   useRole,
   useDismiss,
+  Strategy,
 } from "@floating-ui/react-dom-interactions";
 import { mergeRefs } from "react-merge-refs";
+
 import "./Tooltip.css";
 
 type Props = {
-  content: ReactElement | string;
+  content: ReactElement | string | undefined;
   placement?: Placement;
+  /** The type of CSS position property to apply to the floating element, default "absolute" */
+  strategy?: Strategy;
   children: JSX.Element;
 }
 
-export const Tooltip = ({ content, placement = "top", children }: Props) => {
+export const Tooltip = ({ content, placement = "top",   strategy = "absolute",children }: Props) => {
   const arrowRef = useRef(null);
   const [open, setOpen] = useState(false);
 
@@ -32,8 +36,9 @@ export const Tooltip = ({ content, placement = "top", children }: Props) => {
     floating, 
     context,
     middlewareData,
+    // The stateful placement, which can be different from the initial `placement` passed as options, e.g. "top" may be
+    // flipped to "bottom" if there is not enough room to display the tooltip above the reference element.    
     placement: finalPlacement,
-    strategy, 
   } = useFloating({
     open,
     placement,
@@ -43,6 +48,7 @@ export const Tooltip = ({ content, placement = "top", children }: Props) => {
       shift({ padding: 5 }),
       arrow({ element: arrowRef }),
     ],
+    strategy,
     onOpenChange: setOpen,
   });
 
@@ -66,10 +72,10 @@ export const Tooltip = ({ content, placement = "top", children }: Props) => {
   }[finalPlacement.split('-')[0]] ?? '';
 
   // Preserve the consumer's ref
-  const ref = useMemo(() => mergeRefs([reference, (children as any).ref]), [
-    reference,
-    children
-  ]);
+  const ref = useMemo(
+    () => mergeRefs([reference, (children as any).ref]), 
+    [reference, children]
+  );
 
   // If there is no tooltip content render the children without the tooltip
   if (content === "" || content == null) {
@@ -78,6 +84,8 @@ export const Tooltip = ({ content, placement = "top", children }: Props) => {
   
   return (
     <Fragment>
+      {/* Using the children prop as the reference, attach the ref via cloneElement(). This co-locates the reference 
+      with the floating component. */}
       {cloneElement(children, getReferenceProps({ ref, ...children.props }))}
         {open && (
           <div
