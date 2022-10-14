@@ -8,6 +8,8 @@ The popular [React Tooltip](https://github.com/ReactTooltip/react-tooltip) proje
 has [issues with React 18](https://github.com/ReactTooltip/react-tooltip/issues/769). Using Floating UI to manage the
 positioning of the popup it is now very simple to build a tooltip.
 
+> Update: The React Tooltip project has now been updated to work with React 18.
+
 ## Installation
 
 There's no package install for this. To use it, copy the `Tooltip` component into your project and add the following

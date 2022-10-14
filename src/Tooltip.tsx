@@ -25,6 +25,18 @@ type Props = {
   children: JSX.Element;
 }
 
+/**
+ * Displays content in a popup when the user hovers an element.
+ *
+ * @remarks
+ * The tooltip needs to apply DOM event listeners to its child element. If the child is a custom React element it will
+ * need to forward its ref to the underlying DOM element.
+ *
+ * @example
+ * <Tooltip content="Useful info goes here">
+ *   <button role="button">Hover me</button>
+ * </Tooltip>
+ */
 export const Tooltip = ({ content, placement = "top",   strategy = "absolute",children }: Props) => {
   const arrowRef = useRef(null);
   const [open, setOpen] = useState(false);
